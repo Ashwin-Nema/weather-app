@@ -1,0 +1,23 @@
+.weathergrid {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    align-items: center;
+    column-gap: 5vw;
+}
+
+.bordernone {
+    border: none;
+}
+
+.weatherdatagrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr ;
+    column-gap: 3vw;
+}
+
+.smalltext {
+    font-size: small;
+}
+.smalltext:hover {
+    cursor: pointer;
+}
