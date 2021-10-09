@@ -1,0 +1,2 @@
+.weathergrid{display:grid;grid-template-columns:.5fr 1fr;align-items:center;grid-column-gap:5vw;-webkit-column-gap:5vw;column-gap:5vw}.bordernone{border:none}.weatherdatagrid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-column-gap:3vw;-webkit-column-gap:3vw;column-gap:3vw}.smalltext{font-size:small}.smalltext:hover{cursor:pointer}
+/*# sourceMappingURL=main.1b2d1e85.chunk.css.map */

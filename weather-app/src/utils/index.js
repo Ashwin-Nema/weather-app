@@ -1,3 +1,6 @@
+import {createContext} from 'react'
+
+export const UserisonlineContext = createContext() 
 
 export const convertkelvintocelcius = (temp) => {
     return parseFloat(temp - 273.15).toFixed(2)
@@ -12,3 +15,4 @@ export const properformattedtime = (time) => {
     let seconds = formattedtime[2].length > 1 ? formattedtime[2] : `0${formattedtime[2]}`
     return `${hours}:${minutes}:${seconds} ${amapm}`
 }
+

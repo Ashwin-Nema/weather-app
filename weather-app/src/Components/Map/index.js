@@ -1,12 +1,12 @@
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet'
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useContext } from 'react';
 import L from 'leaflet'
 import './index.css'
 import { Alert } from 'react-bootstrap';
 import { ErrorModal } from '../Error Modal'
 import { useModal } from '../../Hooks'
 import { axiosinstance } from '../../config'
-import { convertkelvintocelcius, properformattedtime } from '../../utils'
+import { convertkelvintocelcius, properformattedtime, UserisonlineContext } from '../../utils'
 
 function DisplayMap({ map, coordinates }) {
 
@@ -35,6 +35,7 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
     const props = { map, coordinates }
     const modalprops = { modal, hidemodal, message }
 
+    const isonline = useContext(UserisonlineContext)
 
     useEffect(() => {
         if (map !== null && tooltipref.current !== undefined && tooltipref.current !== null) {
@@ -46,24 +47,24 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
     const displaymap = useMemo(
 
         () => (
-            <MapContainer
-                center={coordinates}
-                style={{ height: "75vh" }}
-                zoom={10}
-                scrollWheelZoom={true}
-                whenCreated={setMap}>
-                <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+            <>
+                {Object.keys(weatherdata).length > 0 &&
+                    <MapContainer
+                        center={coordinates}
+                        style={{ height: "100vh" }}
+                        zoom={10}
+                        scrollWheelZoom={true}
+                        whenCreated={setMap}>
+                        <TileLayer
+                            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
 
 
-                <Marker ref={markerref} position={coordinates} >
-                    <Tooltip ref={tooltipref} offset={[-15, -15]}  direction="top" opacity={1} permanent>
+                        <Marker ref={markerref} position={coordinates} >
+                            <Tooltip ref={tooltipref} offset={[-15, -15]} direction="top" opacity={1} permanent>
 
-                        {
-                            Object.keys(weatherdata).length > 0 &&
-                            <>
+
                                 <Alert className="bordernone" variant="warning">
                                     <h3 className="text-center">{weatherdata.name} </h3>
                                     <div className="weathergrid">
@@ -88,15 +89,19 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
                                                 <p>Humidity: {weatherdata.humidity}%</p>
                                             </div>
                                         </div>
+
                                     </div>
+
                                 </Alert>
+                            </Tooltip>
+                        </Marker>
 
-                            </>
-                        }
-                    </Tooltip>
-                </Marker>
 
-            </MapContainer>
+                    </MapContainer>
+                }
+
+            </>
+
         ),
         [coordinates, weatherdata]
     )
@@ -116,6 +121,13 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
                 showmodalwithmessage("Sorry your current browser does not support location-tracking feature")
 
             })
+
+        if (isonline !== true) {
+            console.log("fsdfd")
+            showmodalwithmessage("You are offline. Please check your Internet Connection.")
+            return
+        }
+
         if (map !== undefined && map !== null) {
             try {
                 map.locate()
