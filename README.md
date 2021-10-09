@@ -1,4 +1,4 @@
-<div style="display:flex; justify-content:center"><img src="https://res.cloudinary.com/ash006/image/upload/v1633761063/weather_icon_sef7ch.png" alt="Apna Mart" /></div>.
+<div style="display:flex; justify-content:center"><img src="https://res.cloudinary.com/ash006/image/upload/v1633761063/weather_icon_sef7ch.png" height="300" alt="Apna Mart" /></div>.
 
 # Introduction
 
