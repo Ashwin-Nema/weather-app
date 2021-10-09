@@ -7,6 +7,7 @@ import { ErrorModal } from '../Error Modal'
 import { useModal } from '../../Hooks'
 import { axiosinstance } from '../../config'
 import { convertkelvintocelcius, properformattedtime, UserisonlineContext } from '../../utils'
+import { useMediaQuery } from '@mui/material';
 
 function DisplayMap({ map, coordinates }) {
 
@@ -30,13 +31,16 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
     const [map, setMap] = useState(null)
     const [modal, , hidemodal, message, , showmodalwithmessage] = useModal()
 
+    const mapquery = useMediaQuery('(max-width:500px)')
+
+
     const markerref = useRef()
     const tooltipref = useRef()
+
     const props = { map, coordinates }
     const modalprops = { modal, hidemodal, message }
 
     const isonline = useContext(UserisonlineContext)
-
     useEffect(() => {
         if (map !== null && tooltipref.current !== undefined && tooltipref.current !== null) {
             tooltipref.current._container.style.backgroundColor = "#fff3cd"
@@ -51,7 +55,7 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
                 {Object.keys(weatherdata).length > 0 &&
                     <MapContainer
                         center={coordinates}
-                        style={{ height: "100vh" }}
+                        style={{ height: `${mapquery === true ? "135vh":"100vh"}` }}
                         zoom={10}
                         scrollWheelZoom={true}
                         whenCreated={setMap}>
@@ -69,9 +73,9 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
                                     <h3 className="text-center">{weatherdata.name} </h3>
                                     <div className="weathergrid">
                                         <div>
-                                            <img src={`https://openweathermap.org/img/wn/${weatherdata.icon}.png`} alt={weatherdata.description} />
-                                            <p >{weatherdata.description}</p>
-                                            <p>{weatherdata.temperature}°C</p>
+                                            <div className="weatherimagecontainer"><img src={`https://openweathermap.org/img/wn/${weatherdata.icon}.png`} alt={weatherdata.description} /> </div>
+                                            <p className="weatherimagecontainer">{weatherdata.description}</p>
+                                            <p className="weatherimagecontainer">{weatherdata.temperature}°C</p>
                                         </div>
 
                                         <div className="weatherdatagrid">
@@ -103,7 +107,7 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
             </>
 
         ),
-        [coordinates, weatherdata]
+        [coordinates, weatherdata, mapquery]
     )
 
     const findcurrentuserlocation = () => {
@@ -123,7 +127,6 @@ export const WeatherMap = ({ coordinates, weatherdata, saveweatherdata }) => {
             })
 
         if (isonline !== true) {
-            console.log("fsdfd")
             showmodalwithmessage("You are offline. Please check your Internet Connection.")
             return
         }

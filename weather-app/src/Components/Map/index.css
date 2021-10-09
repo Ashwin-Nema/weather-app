@@ -21,3 +21,26 @@
 .smalltext:hover {
     cursor: pointer;
 }
+
+@media (max-width:600px) {
+    .weathergrid {
+        grid-template-columns: 1fr;
+        row-gap: 5vw;
+    }
+    .weatherimagecontainer {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width:500px) {
+    .weatherdatagrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width:350px) {
+    .weatherdatagrid {
+        grid-template-columns: 1fr;
+    }
+}
